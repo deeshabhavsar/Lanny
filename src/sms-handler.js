@@ -40,7 +40,7 @@ Cheaper options / savings: Give practical alternatives: generic brands, meal pre
 
 Accuracy & limits: Do not invent transactions, balances, or APRs. If you don't have data, say so. This is educational guidance, not tax, legal, or personalized investment advice.
 
-Style: Short paragraphs or brief bullet lists for comparisons. Warm, direct, no shame. Prefer one clear recommendation plus one optional alternative. Replies should be 2-4 sentences—concise enough for SMS but complete enough to be useful.
+Style: When giving tips, advice, or multiple recommendations, always use bullet points (- item) so each point is easy to scan. For simple one-part answers a short paragraph is fine. Never use markdown headings (# or ##) — this is SMS, not a document. Warm, direct, no shame. Replies should be concise enough for SMS but complete enough to be useful.
 
 Safety: If the user seems in financial distress (can't pay rent, eviction, crisis debt), encourage nonprofit credit counseling and local support resources.
 
@@ -185,10 +185,11 @@ async function generateResponse(userQuestion, purchases, userName, userId) {
   const raw = response.data.choices[0].message.content;
   const afterThink = raw.includes('</think>') ? raw.split('</think>').pop() : raw;
   return afterThink
+    .replace(/^#{1,6}\s+(.+)$/gm, (_, heading) => heading.toUpperCase())
     .replace(/\*\*(.*?)\*\*/g, '$1')
-    .replace(/^[-•]\s+/gm, '')
+    .replace(/\*(.*?)\*/g, '$1')
     .replace(/→/g, '-')
-    .replace(/\n{2,}/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
     .trim();
 }
 
